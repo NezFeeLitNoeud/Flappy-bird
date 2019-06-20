@@ -88,7 +88,6 @@ tuyaux[0] = {
 			ctx.drawImage(visu.bas, tuyaux[i].x, tuyaux[i].y + constant);
 			tuyaux[i].x--;
 
-// console.log(moins)
 			if(tuyaux[i].x == 100){
 				tuyaux.push({
 					x: canva.width,
@@ -96,6 +95,11 @@ tuyaux[0] = {
 
 				})
 			}
+
+			if(oiseau.flappyX + oiseau.flap.width >= tuyaux[i].x && oiseau.flappyX <= tuyaux[i].x + tuyauxH.width && (oiseau.flappyY <= tuyaux[i].y + tuyauxH.height || oiseau.flappyY + oiseau.flap.height >= tuyaux[i].y + constant) || oiseau.flappyY >= 425){
+             location.reload(); // reload the page
+             // console.log("perdu")
+        }
 		}
     // if(oiseau.flappyY >= 425){
     // 	location.reload();
