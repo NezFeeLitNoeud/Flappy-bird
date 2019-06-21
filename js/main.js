@@ -1,116 +1,100 @@
-let canva = document.getElementById("flappyBird");
-let ctx = canva.getContext("2d");
+let canvaBird = document.getElementById("flappyBird");
+let ctxBird = canvaBird.getContext("2d");
 
 let flappy = new Image();
-let background = new Image();
-let bottom = new Image();
-let tuyauxH = new Image();
-let tuyauxB = new Image();
+let bckgFlappy = new Image();
+let bottomFlappy = new Image();
+let tuyauxHFlappy = new Image();
+let tuyauxBFlappy = new Image();
 
 flappy.src = 'images/bird.png';
-background.src = 'images/bg.png';
-bottom.src = 'images/fg.png';
-tuyauxH.src = 'images/tuyauxH.png';
-tuyauxB.src = 'images/tuyauxB.png';
+bckgFlappy.src = 'images/bg.png';
+bottomFlappy.src = 'images/fg.png';
+tuyauxHFlappy.src = 'images/tuyauxH.png';
+tuyauxBFlappy.src = 'images/tuyauxB.png';
 
-let constant;
+let constantFlappy;
 
-class Decors {
-	constructor(canvas, context, flap, bg, bot, haut, bas){
-		this.canvas = canva;
-		this.context = ctx;
-		this.flap = flappy;
-		this.bg = background;
-		this.bot = bottom;
-		this.haut = tuyauxH;
-		this.bas = tuyauxB;
-	}
+class DecorsFlappy {
+    constructor(canvasF, contextF, flapF, bgF, botF, hautF, basF) {
+        this.canvasF = canvaBird;
+        this.contextF = ctxBird;
+        this.flapF = flappy;
+        this.bgF = bckgFlappy;
+        this.botF = bottomFlappy;
+        this.hautF = tuyauxHFlappy;
+        this.basF = tuyauxBFlappy;
+    }
 }
 
-const visu = new Decors;
+const visuFlappy = new DecorsFlappy;
 
-class Flappy extends Decors {
-	constructor(gap, flappyX, flappyY, gravite, score, bg, haut, bas){
-		super(bg, haut, bas)
-		this.gap = 90;
-		this.flappyX = 10;
-		this.flappyY = 150;
-		this.gravite = 1.5;
-		this.score = 0;
-		this.bas;
-	}
+class Flappy extends DecorsFlappy {
+    constructor(gapF, flappyFX, flappyFY, graviteF, scoreF, bgF, hautF, basF) {
+        super(bgF, hautF, basF)
+        this.gapF = 100;
+        this.flappyFX = 10;
+        this.flappyFY = 150;
+        this.graviteF = 1.5;
+        this.scoreF = 0;
+    }
 
-	moveUp(){
-		this.flappyY -= 25;
-		}
+    moveUp() {
+        this.flappyFY -= 25;
+    }
 }
 
-const oiseau = new Flappy;
+const flapp = new Flappy;
 
-document.addEventListener("keydown", function(){
-	// Monte de 25px en hauteur à chaque presse de clavier
-	oiseau.moveUp();
+document.addEventListener("keydown", function() {
+    // Monte de 25px en hauteur à chaque presse de clavier
+    flapp.moveUp();
+
 })
 
-let tuyaux = [];
-// console.log(tuyaux);
-tuyaux[0] = {
-	x: canva.width,
-	y:0
+let tuyauxFlappy = []; 
+tuyauxFlappy[0] = {
+    x:canvaBird.width,
+    y:0
 }
 
-// console.log(tuyaux);
+function drawFlappy() {
+    ctxBird.drawImage(visuFlappy.bgF, 0, 0);
 
+    for (let i = 0; i < tuyauxFlappy.length; i++) {
 
-// function moveUp(){
-//    oiseau.flappyY -= 25;
-//    console.log(oiseau.flappyY);
-// }
+        constantFlappy = flapp.hautF.height + flapp.gapF;
+        // x = margin-left
+        // y = margin-top
+        ctxBird.drawImage(visuFlappy.hautF, tuyauxFlappy[i].x, tuyauxFlappy[i].y);
+        ctxBird.drawImage(visuFlappy.basF, tuyauxFlappy[i].x, tuyauxFlappy[i].y + constantFlappy);
+        tuyauxFlappy[i].x--;
+       
 
-// document.addEventListener("keydown", movingUp);
-
-// function movingUp(){
-// 	oiseau.flappyY += 25;
-// 	console.log(oiseau.flappyY)
-// }
-
-// document.getElementById("btn").addEventListener("click", draw());
-
-	function draw(){
-		
-    ctx.drawImage(visu.bg,0,0);
-
-		for(let i = 0; i < tuyaux.length; i++){
-			constant = oiseau.haut.height + oiseau.gap;
-			// x = margin-left
-			// y = margin-top
-			ctx.drawImage(visu.haut, tuyaux[i].x, tuyaux[i].y);
-			ctx.drawImage(visu.bas, tuyaux[i].x, tuyaux[i].y + constant);
-			tuyaux[i].x--;
-
-			if(tuyaux[i].x == 100){
-				tuyaux.push({
-					x: canva.width,
-					y: Math.floor(Math.random()*oiseau.haut.height)-oiseau.haut.height
-
-				})
-			}
-
-			if(oiseau.flappyX + oiseau.flap.width >= tuyaux[i].x && oiseau.flappyX <= tuyaux[i].x + tuyauxH.width && (oiseau.flappyY <= tuyaux[i].y + tuyauxH.height || oiseau.flappyY + oiseau.flap.height >= tuyaux[i].y + constant) || oiseau.flappyY >= 425){
-             location.reload(); // reload the page
-             // console.log("perdu")
+        if (tuyauxFlappy[i].x == 100) {
+            tuyauxFlappy.push({
+                x: canvaBird.width,
+                y: Math.floor(Math.random() * flapp.hautF.height) - flapp.hautF.height
+            })
         }
-		}
-    // if(oiseau.flappyY >= 425){
-    // 	location.reload();
-    // }
-    ctx.drawImage(visu.flap, oiseau.flappyX, oiseau.flappyY);
-    oiseau.flappyY += oiseau.gravite
+        if (flapp.flappyFX + flapp.flapF.width >= tuyauxFlappy[i].x && flapp.flappyFX <= tuyauxFlappy[i].x + tuyauxHFlappy.width && (flapp.flappyFY <= tuyauxFlappy[i].y + tuyauxHFlappy.height || flapp.flappyFY + flapp.flapF.height >= tuyauxFlappy[i].y + constantFlappy) || flapp.flappyFY >= 425) {
+            location.reload(); // reload the page
+        }
 
+        if(tuyauxFlappy[i].x == 5){
+            flapp.scoreF++;
+        }
+    }
+    ctxBird.drawImage(visuFlappy.flapF, flapp.flappyFX, flapp.flappyFY);
+    // Fait tomber l'oiseau
+    flapp.flappyFY += flapp.graviteF
+    ctxBird.drawImage(visuFlappy.botF, 0, 450)
 
-    ctx.drawImage(visu.bot, 0 , 450)
+    ctxBird.fillStyle = "#000";
+    ctxBird.font = "20px Verdana";
+    ctxBird.fillText("Score : "+flapp.scoreF,10,canvaBird.height-20);
 
-    requestAnimationFrame(draw);
+ requestAnimationFrame(drawFlappy);
+
 }
-
-draw()
+ document.getElementById("bas").addEventListener("click", drawFlappy)
